@@ -1,28 +1,30 @@
 
 {% extends "base.html" %}
-{% block title %}Home Feed{% endblock %}
+{% block title %}Edit Profile{% endblock %}
 
 {% block content %}
-    <div class="dashboard-container">
-        <h2>Edit Your Profile</h2>
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <label>Profile Picture</label>
-            <input type="file" name="profile_image">
+<div class="dashboard-container">
+    <h2>Edit Your Profile</h2>
 
-            <label>Full Name</label>
-            <input type="text" name="full_name" value="{{ user.get_full_name }}">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
 
-            <label>Username</label>
-            <input type="text" name="username" value="{{ user.username }}">
+        <label>Profile Picture</label>
+        <input type="file" name="profile_image">
 
-            <label>Email</label>
-            <input type="email" name="email" value="{{ user.email }}">
+        <label>Full Name</label>
+        <input type="text" name="full_name" value="{{ profile.full_name }}">
 
-            <label>Bio</label>
-            <textarea name="bio">{{ user.profile.bio }}</textarea>
+        <label>Username</label>
+        <input type="text" name="username" value="{{ user.username }}">
 
-            <button type="submit">Save Changes</button>
-        </form>
-    </div>
+        <label>Email</label>
+        <input type="email" name="email" value="{{ user.email }}">
+
+        <label>Bio</label>
+        <textarea name="bio">{{ profile.bio }}</textarea>
+
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
 {% endblock %}

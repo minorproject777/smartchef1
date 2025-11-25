@@ -128,12 +128,11 @@ def upload_recipe(request):
 
         # Validate all fields
         if not title or not short_description or not image:
-            messages.error(request, "All fields are required!")
             return redirect("upload_recipe")
 
         # Check for duplicates by the same user
         if Recipe.objects.filter(user=request.user, title=title).exists():
-            messages.error(request, "You have already uploaded a recipe with this title!")
+
             return redirect("upload_recipe")
 
         # ✅ Create the recipe only once
@@ -154,18 +153,42 @@ def upload_recipe(request):
 
 
 # Edit Profile
+
 @login_required
 def edit_profile(request):
     profile = request.user.profile
+    user = request.user
+
     if request.method == 'POST':
+        new_username = request.POST.get('username')
+        new_email = request.POST.get('email')
+
+        # Validate uniqueness
+        if User.objects.exclude(pk=user.pk).filter(username=new_username).exists():
+            return redirect('edit_profile')
+
+        if User.objects.exclude(pk=user.pk).filter(email=new_email).exists():
+            return redirect('edit_profile')
+
+        user.username = new_username
+        user.email = new_email
+        user.save()
+
         profile.full_name = request.POST.get('full_name')
         profile.bio = request.POST.get('bio')
         if request.FILES.get('profile_image'):
             profile.profile_image = request.FILES.get('profile_image')
         profile.save()
-        return redirect('dashboard_profile', username=request.user.username)
 
-    return render(request, 'edit_profile.html', {'profile': profile})
+        
+        return redirect('dashboard_profile', username=user.username)
+
+    return render(request, 'edit_profile.html', {
+        'profile': profile,
+        'user': user,
+    })
+
+
 
 # Recipe Details / Expand
 @login_required

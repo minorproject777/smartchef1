@@ -16,8 +16,8 @@
 
 
         <div class="details">
-            <h2>{{ user.get_full_name|default:user.username }}</h2>
-            <p>{{ user.username }}</p>
+            <h2>{{user.username }}</h2>
+            <p>{{ profile.full_name|default:user.username }}</p>
             <p>{{ user.email }}</p>
             <p>{{ profile.bio|default:"No bio yet." }}</p>
 
