@@ -23,6 +23,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),  # include accounts app
     path('ajax/follow/<int:user_id>/', views.ajax_follow, name='ajax_follow'),
+    path('recipe/<int:recipe_id>/', views.recipe_detail, name='recipe_detail'),
+    path('recipe/<int:recipe_id>/like/', views.like_recipe, name='like_recipe'),
+
 
 ]
 
